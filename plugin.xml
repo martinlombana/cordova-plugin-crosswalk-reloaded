@@ -14,10 +14,9 @@
     <engine name="apple-ios" version=">=11.0"/>
     <engine name="cordova-android" version=">=6.4.0"/>
     <engine name="cordova-plugman" version=">=5.2.0"/>
-    <!-- needed for gradleReference support -->
   </engines>
 
-
+  <preference name="WEBVIEW_ENGINE"/>
   <js-module src="src/www/util.js" name="IonicWebView">
     <clobbers target="Ionic.WebView"/>
   </js-module>
@@ -27,31 +26,39 @@
       <allow-navigation href="http://localhost/*"/>
       <allow-navigation href="https://localhost/*"/>
       <allow-navigation href="ionic://*"/>
-      <!-- <preference name="webView" value="org.crosswalk.engine.XWalkWebViewEngine"/> -->
       <preference name="xwalkVersion" value="$XWALK_VERSION"/>
       <preference name="xwalkLiteVersion" value="$XWALK_LITEVERSION"/>
       <preference name="xwalkCommandLine" value="$XWALK_COMMANDLINE"/>
       <preference name="xwalkMode" value="$XWALK_MODE" />
       <preference name="xwalkMultipleApk" value="$XWALK_MULTIPLEAPK" />
       <preference name="android-minSdkVersion" value="19" />
-
+	  <preference name="webView" value="com.lifang123.cordova.webview.IonicCrosswalkWebViewEngine"/>
       <preference name="webView" value="com.ionicframework.cordova.webview.IonicWebViewEngine"/>
-      <feature name="IonicWebView">
-        <param name="android-package" value="com.ionicframework.cordova.webview.IonicWebView"/>
+<feature name="IonicWebView">
+        <param name="android-package" value="com.lifang123.cordova.webview.IonicCrosswalkWebView"/>
       </feature>
 
     </config-file>
+	
+    <config-file target="AndroidManifest.xml" parent="/manifest/application" mode="merge">
+      <meta-data android:name="WEBVIEW_ENGINE" android:value="$WEBVIEW_ENGINE"/>
+    </config-file>
+	
     <source-file src="src/android/com/ionicframework/cordova/webview/IonicWebViewEngine.java" target-dir="src/com/ionicframework/cordova/webview"/>
     <source-file src="src/android/com/ionicframework/cordova/webview/IonicWebView.java" target-dir="src/com/ionicframework/cordova/webview"/>
     <source-file src="src/android/com/ionicframework/cordova/webview/AndroidProtocolHandler.java" target-dir="src/com/ionicframework/cordova/webview"/>
     <source-file src="src/android/com/ionicframework/cordova/webview/UriMatcher.java" target-dir="src/com/ionicframework/cordova/webview"/>
     <source-file src="src/android/com/ionicframework/cordova/webview/WebViewLocalServer.java" target-dir="src/com/ionicframework/cordova/webview"/>
+	    <source-file src="src/android/com/lifang123/cordova/webview/IonicCrosswalkWebViewEngine.java" target-dir="src/com/lifang123/cordova/webview"/>
+    <source-file src="src/android/com/lifang123/cordova/webview/IonicCrosswalkWebView.java" target-dir="src/com/lifang123/cordova/webview"/>
+    <source-file src="src/android/com/lifang123/cordova/webview/CrosswalkWebViewEngine.java" target-dir="src/com/lifang123/cordova/webview"/>
+	
     <preference name="ANDROID_SUPPORT_ANNOTATIONS_VERSION" default="27.+"/>
     <framework src="com.android.support:support-annotations:$ANDROID_SUPPORT_ANNOTATIONS_VERSION"/>
 
     <preference name="XWALK_VERSION" default="23+"/>
     <preference name="XWALK_LITEVERSION" default="xwalk_core_library_canary:17+"/>
-    <preference name="XWALK_COMMANDLINE" default="--disable-pull-to-refresh-effect"/>
+    <preference name="XWALK_COMMANDLINE" default="--disable-pull-to-refresh-effect --ignore-gpu-blacklist"/>
     <preference name="XWALK_MODE" default="embedded" />
     <preference name="XWALK_MULTIPLEAPK" default="true" />
     <config-file target="res/xml/config.xml" parent="/*">
@@ -72,7 +79,7 @@
     <source-file src="src/android/org/crosswalk/engine/XWalkCordovaCookieManager.java" target-dir="src/org/crosswalk/engine"/>
     <source-file src="src/android/org/crosswalk/engine/XWalkCordovaClientCertRequest.java" target-dir="src/org/crosswalk/engine"/>
     <source-file src="src/android/org/crosswalk/engine/XWalkCordovaHttpAuthHandler.java" target-dir="src/org/crosswalk/engine"/>
-    <source-file src="src/android/libs/xwalk_core_library-23.53.589.4-64bit.aar" target-dir="src/libs/"/>
+    <source-file src="src/android/libs/xwalk_77.aar" target-dir="src/libs/"/>
 
     <framework src="src/android/xwalk.gradle" custom="true" type="gradleReference"/>
 

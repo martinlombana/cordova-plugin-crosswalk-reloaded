@@ -8,7 +8,7 @@ import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-  public class IonicWebView extends CordovaPlugin  {
+public class IonicWebView extends CordovaPlugin  {
 
   public static final String WEBVIEW_PREFS_NAME = "WebViewSettings";
   public static final String CDV_SERVER_PATH = "serverBasePath";

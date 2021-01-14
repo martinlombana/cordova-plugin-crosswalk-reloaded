@@ -1,0 +1,99 @@
+º
+https://gist.github.com/niespodd/1fa82da6f8c901d1c33d2fcbb762947d
+
+@literalpie
+Hi guys,
+This works fine for me. Just get into the node-modules, and move into the browser.js file and change
+
+node: false,
+
+for
+
+node: {crypto: true, stream: true},
+
+node_modules/angular-devkit/build-angular/src/angular-cli-files/models/webpack-configs/browser.js
+
+-----------------------------
+
+https://github.com/phonegap/phonegap-plugin-barcodescanner/issues/418
+
+I had to remove inside ..\plugins\phonegap-plugin-barcodescanner\plugin.xml the
+
+<uses-feature android:name="android.hardware.camera">
+then removed and added again android platform.
+Worked very fine for me.
+
+-----------------------------
+
+Error:All flavors must now belong to a named flavor dimension.
+
+Open Platforms>android>cordova-plugin-ionic4-crosswalk-webview OR in the plugins folder for it to be permanent!!!
+
+add, in the node:
+
+android {
+flavorDimensions "default"
+
+
+
+2021/12/21: With the original Xwalk lib, we could not compile against api 29, because Android 10 Would crash.
+So I found a solution and mashed up, again, the lib for all architectures, based on:
+https://github.com/ks32/CrosswalkNative at version 77 of chromium, wich is even better than the old 53.
+
+armeabi == armv7 == x86 -> SAME LIBS
+
+arm64 == x86_64 --> SAME LIBS
+
+armeabi/armv7/x86 apks are actually all the same, (they are a multi-arch APK for 32bit). arm64 & x86_64 likewise are also the same.
+
+
+So you only need to upload arm64's APK & armv7's APK to the play store. Not all 5.
+
+
+
+Modified xwalk.gradle or service-xwalk.gradle (when it's insideplatforms
+
+
+cdvPluginPostBuildExtras.add({
+   /* def xwalkMavenRepo = 'https://download.01.org/crosswalk/releases/crosswalk/android/maven2';
+    if (xwalkMode == LITE_MODE) {
+        xwalkMavenRepo = 'https://download.01.org/crosswalk/releases/crosswalk-lite/android/maven2';
+    }*/
+    repositories {
+      flatDir {
+        dirs 'libs'
+      }
+    }
+
+    android {
+
+    flavorDimensions "default"
+
+        if (xwalk64bit != null) {
+            productFlavors {
+            // Building all together
+                x86_64 {
+                    versionCode defaultConfig.versionCode + 6
+                    ndk {
+                       abiFilters "x86_64", "x86", "arm64-v8a", "armeabi-v7a"
+                    }
+                }
+               /* arm64 {
+                    versionCode defaultConfig.versionCode + 9
+                    ndk {
+                        abiFilters "arm64-v8a", ""
+                    }
+                }*/
+            }
+        }
+    }
+
+
+
+AFTER CREATING THE APK:
+
+Execute
+
+cd platforms/android/
+
+gradlew.bat bundle
